@@ -1,6 +1,7 @@
 %{
 #include <stdio.h>
 #include <assert.h>
+#include "interpreter.h"
 %}
 
 %token T_Int
@@ -21,5 +22,6 @@ E  :  E '+' E  { $$ = $1 + $3; }
 %%
 
 int main () {
-    return yyparse();
+    int result = yyparse ();
+    return result;
 }
