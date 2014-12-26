@@ -25,9 +25,6 @@ int eval_arith (node_arith_t *node) {
     }
 }
 
-void interpret () {
-    root_t *currnode = program_start;
-    while (currnode != NULL) {
-        eval_expr (currnode->block);
-    }
+int interpret () {
+    return eval_expr (program_start->block);
 }
