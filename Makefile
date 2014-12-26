@@ -1,4 +1,5 @@
 CC=gcc
+CFLAGS=-Wall -g
 LDFLAGS=-ll -ly
 PARSER=bison
 PFLAGS=-vdty
