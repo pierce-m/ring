@@ -20,7 +20,7 @@ add_subtree (node_expr_t *block) {
 
 /* Constructs arithmetic node from two expressions and a type */
 node_arith_t*
-make_arith_node (arith_type type, node_expr_t *op1, node_expr_t *op2) {
+make_node_arith (arith_type type, node_expr_t *op1, node_expr_t *op2) {
     node_arith_t *node = malloc (sizeof (node_arith_t));
     node->type = type;
     node->op1 = op1;

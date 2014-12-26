@@ -37,14 +37,17 @@ void initialize_program ();
 
 /* The main interpreter function, belongs to interpreter.c 
  * This function is called to interpret the AST after it has been built. */
-void interpret ();
+int interpret ();
+
+/* Initializes the first program root. Called before parsing. */
+void initialize_program ();
 
 /* Adds an expression tree to the current root, and creates a
  * new successor root. */
 void add_subtree (node_expr_t *block);
 
 /* Constructor for arithmetic AST node */
-node_arith_t *make_node_arith (char *type, node_expr_t *op1, node_expr_t *op2);
+node_arith_t *make_node_arith (arith_type, node_expr_t *op1, node_expr_t *op2);
 
 /* Constructor for expression from int literal */
 node_expr_t *node_expr_from_int (int val);
