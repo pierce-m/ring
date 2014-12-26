@@ -11,7 +11,7 @@ void initialize_program () {
 /* Adds an expression tree to the current root, and creates a
  * new successor root. */
 void
-add_subtree (expr *block) {
+add_subtree (node_expr_t *block) {
     last_successor->block = block;
     root_t *r = malloc (sizeof (root_t));
     last_successor->next = r;
@@ -20,7 +20,7 @@ add_subtree (expr *block) {
 
 /* Constructs arithmetic node from two expressions and a type */
 node_arith_t*
-make_arith_node (arith_type type, expr *op1, expr *op2) {
+make_arith_node (arith_type type, node_expr_t *op1, node_expr_t *op2) {
     node_arith_t *node = malloc (sizeof (node_arith_t));
     node->type = type;
     node->op1 = op1;
@@ -29,18 +29,18 @@ make_arith_node (arith_type type, expr *op1, expr *op2) {
 }
 
 /* Constructs expressions with int literals */
-expr*
-expr_from_int (int val) {
-    expr *e = malloc (sizeof (expr));
+node_expr_t*
+node_expr_from_int (int val) {
+    node_expr_t *e = malloc (sizeof (node_expr_t));
     e->body.val = val;
     e->type = INT;
     return e;
 }
 
 /* Constructs expressions with arithmetic nodes */
-expr*
-expr_from_arith (node_arith_t *node) {
-    expr *e = malloc (sizeof (expr));
+node_expr_t*
+node_expr_from_arith (node_arith_t *node) {
+    node_expr_t *e = malloc (sizeof (node_expr_t));
     e->type = ARITH;
     e->body.arith_val = node;
     return e;

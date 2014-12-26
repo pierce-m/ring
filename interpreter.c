@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "interpreter.h"
 
-int eval_expr (expr *exp) {
+int eval_expr (node_expr_t *exp) {
     switch (exp->type) {
         case INT:
            return exp->body.val; 

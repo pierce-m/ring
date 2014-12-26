@@ -1,6 +1,6 @@
 /* The root AST node, indicating the start of the program. */
 typedef struct root_t {
-    struct expr *block;
+    struct node_expr_t *block;
     struct root_t *next;
 } root_t;
 
@@ -16,21 +16,21 @@ typedef enum arith_type { ADD, SUB, MUL, DIV } arith_type;
 /* An arithmetic AST node */
 typedef struct node_arith_t {
     arith_type type;
-    struct expr *op1;
-    struct expr *op2;
+    struct node_expr_t *op1;
+    struct node_expr_t *op2;
 } node_arith_t;
 
 /* Basic expression types */
 typedef enum expr_type { INT, ARITH } expr_type;
 
 /* Expression type for ring */
-typedef struct expr {
+typedef struct node_expr_t {
     expr_type type;
     union body {
         int val;
         node_arith_t *arith_val;
     } body;
-} expr;
+} node_expr_t;
 
 /* Initializes the first program root. Called before parsing. */
 void initialize_program ();
@@ -41,13 +41,13 @@ void interpret ();
 
 /* Adds an expression tree to the current root, and creates a
  * new successor root. */
-void add_subtree (expr *block);
+void add_subtree (node_expr_t *block);
 
 /* Constructor for arithmetic AST node */
-node_arith_t *make_node_arith (char *type, expr *op1, expr *op2);
+node_arith_t *make_node_arith (char *type, node_expr_t *op1, node_expr_t *op2);
 
 /* Constructor for expression from int literal */
-expr *expr_from_int (int val);
+node_expr_t *node_expr_from_int (int val);
 
 /* Constructs expressions with arithmetic nodes */
-expr *expr_from_arith (node_arith_t *node);
+node_expr_t *node_expr_from_arith (node_arith_t *node);
