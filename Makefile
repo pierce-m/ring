@@ -1,11 +1,22 @@
-ring: y.tab.o lex.yy.o interpreter.o node.o
-	gcc -o ring y.tab.o lex.yy.o interpreter.o -ll -ly
+CC=gcc
+LDFLAGS=-ll -ly
+PARSER=bison
+PFLAGS=-vdty
+LEXER=flex
+SOURCES=y.tab.c lex.yy.c interpreter.c node.c
+PARSERSRC=ring.y
+LEXERSRC=ring.l
+OBJECTS=$(SOURCES:.c=.o)
+EXECUTABLE=ring
 
-lex.yy.c: y.tab.c ring.l
-	flex ring.l
+$(EXECUTABLE): $(OBJECTS)
+	$(CC) -o $(EXECUTABLE) $(OBJECTS) $(LDFLAGS)
 
-y.tab.c:
-	bison -vdty ring.y
+lex.yy.c: y.tab.c $(LEXERSRC)
+	$(LEXER) $(LEXERSRC)
+
+y.tab.c: $(PARSERSRC)
+	$(PARSER) $(PFLAGS) $(PARSERSRC)
 
 clean:
-	rm ring y.tab.c lex.yy.c y.tab.h y.output y.tab.o node.o lex.yy.o interpreter.o
+	rm $(EXECUTABLE) $(OBJECTS) y.tab.c lex.yy.c y.tab.h y.output
