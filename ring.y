@@ -1,10 +1,13 @@
 %{
 #include <stdio.h>
 #include <assert.h>
-#include "interpreter.h"
+#include "node.h"
 %}
 
 %token T_Int
+
+%left '-' '+'
+%left '*' '/'
 
 %%
 
