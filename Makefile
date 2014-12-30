@@ -1,23 +1,18 @@
 CC=gcc
-CFLAGS=-Wall -g
-LDFLAGS=-ll -ly
-PARSER=bison
-PFLAGS=-vdty
-LEXER=flex
+CFLAGS=-Wall
 SOURCES=y.tab.c lex.yy.c interpreter.c node.c
-PARSERSRC=ring.y
-LEXERSRC=ring.l
 OBJECTS=$(SOURCES:.c=.o)
+TRASH=y.tab.c lex.yy.c y.tab.h y.output out.ring ring.dSYM
 EXECUTABLE=ring
 
 $(EXECUTABLE): $(OBJECTS)
-	$(CC) -o $(EXECUTABLE) $(OBJECTS) $(LDFLAGS)
+	$(CC) -g -o $(EXECUTABLE) $(SOURCES) -ll -ly 
 
-lex.yy.c: y.tab.c $(LEXERSRC)
-	$(LEXER) $(LEXERSRC)
+lex.yy.c: y.tab.c
+	flex ring.l
 
-y.tab.c: $(PARSERSRC)
-	$(PARSER) $(PFLAGS) $(PARSERSRC)
+y.tab.c:
+	bison -vdty ring.y
 
 clean:
-	rm $(EXECUTABLE) $(OBJECTS) y.tab.c lex.yy.c y.tab.h y.output
+	rm -rf $(TRASH) $(EXECUTABLE) $(OBJECTS) 

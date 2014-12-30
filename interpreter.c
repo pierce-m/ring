@@ -25,6 +25,15 @@ int eval_arith (node_arith_t *node) {
     }
 }
 
+int eval_statement (node_statement_t *node) {
+    switch (node->type) {
+        case EXPR:
+            return eval_expr (node->block.expr);
+    }
+}
+
+
 int interpret () {
-    return eval_expr (program_start->block);
+    int ret = eval_statement (program_start->st_list);
+    return ret;
 }
