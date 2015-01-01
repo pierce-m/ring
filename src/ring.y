@@ -1,7 +1,5 @@
 %{
 #include "src/parser_utils.h"
-
-void execute_or_append (node_statement_t *s);
 %}
 
 %type <state>P
