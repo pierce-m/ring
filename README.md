@@ -3,4 +3,6 @@ ring
 First run ```make```.
 Usage: for repl type ```./ring```. Otherwise the structure goes like this: 
 
-```./ring [-i infile.ring [-o outfile]]```
+```./ring [-i infile | [infile -o outfile]]```
+
+The ```-i``` instructs the interpreter to run interactively after executing the contents of ```infile```.
