@@ -36,12 +36,13 @@ S  : 'print' E '\n' { $$ = node_statement_print ($2);     }
    | E '\n'         { $$ = node_statement_expr ($1);      }
    ;
    
-E  :  E '+' E  { $$ = node_expr_from_arith (make_node_arith (ADD, $1, $3)); }
-   |  E '-' E  { $$ = node_expr_from_arith (make_node_arith (SUB, $1, $3)); }
-   |  E '*' E  { $$ = node_expr_from_arith (make_node_arith (MUL, $1, $3)); }
-   |  E '/' E  { $$ = node_expr_from_arith (make_node_arith (DIV, $1, $3)); }
-   |  T        { $$ = node_expr_from_ring ($1); }
-   |  ID       { $$ = node_expr_from_id ($1); }
+E  :  '(' E ')'  { $$ = $2; }
+   |  E '+' E    { $$ = node_expr_from_arith (make_node_arith (ADD, $1, $3)); }
+   |  E '-' E    { $$ = node_expr_from_arith (make_node_arith (SUB, $1, $3)); }
+   |  E '*' E    { $$ = node_expr_from_arith (make_node_arith (MUL, $1, $3)); }
+   |  E '/' E    { $$ = node_expr_from_arith (make_node_arith (DIV, $1, $3)); }
+   |  T          { $$ = node_expr_from_ring ($1); }
+   |  ID         { $$ = node_expr_from_id ($1); }
    ; 
 
 ID :  T_Id     { $$ = node_id_init ($1); }
