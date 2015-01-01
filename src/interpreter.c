@@ -36,15 +36,18 @@ eval_expr (node_expr_t *exp, env_t *env) {
 }
 
 void
-eval_statement (node_statement_t *node, env_t *env) {
-    switch (node->type) {
-        case EXPR:
-            eval_expr (node->block.expr, env);
-        case PRINT:
-            fprintf(RING_OUT, "%d\n", eval_expr (node->block.expr, env));
+eval_statements (node_statement_t *node, env_t *env) {
+    for (; node != NULL; node = node->next) {
+        switch (node->type) {
+            case EXPR:
+                eval_expr (node->block.expr, env);
+            case PRINT:
+                fprintf(RING_OUT, "%d\n", eval_expr (node->block.expr, env));
+        }
     }
 }
 
 void
 interpret () {
+    eval_statements (program_start->st_list, program_start->env);
 }
