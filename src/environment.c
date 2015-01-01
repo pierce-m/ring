@@ -2,14 +2,13 @@
 #include <stdlib.h>
 
 void
-env_add_binding (char *name, ring_type *value, env *e) {
+env_add_binding (char *name, ring_t *value, env_t *e) {
     hash_insert (name, value, e->bindings);
 }
 
-//Still needs to handle not-found errors
-ring_type*
-env_lookup (char *name, env *e) {
-    ring_type *val;
+ring_t*
+env_lookup (char *name, env_t *e) {
+    ring_t *val;
     if ((val = hash_get (name, e->bindings)) != NULL) {
         return val;
     } else if (e->parent != NULL) {
@@ -19,9 +18,9 @@ env_lookup (char *name, env *e) {
     }
 }
 
-env*
-env_extend (env *e) {
-    env *newEnv = malloc (sizeof (env));
+env_t*
+env_extend (env_t *e) {
+    env_t *newEnv = malloc (sizeof (env_t));
     e->parent = e;
     e->bindings = malloc (sizeof (hashtable));
     return e;
