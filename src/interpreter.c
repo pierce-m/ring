@@ -1,39 +1,48 @@
-#include "interpreter.h"
 #include <stdio.h>
+#include <stdlib.h>
+#include "interpreter.h"
 
 int
-eval_primitive (ring_t *literal) {
+eval_ring (ring_t *literal) {
     switch (literal->type) {
         case INT:
             return literal->value.int_val;
     }
 }
 
-int
+ring_t*
 eval_arith (node_arith_t *node, env_t* env) {
-    int op1 = eval_expr (node->op1, env);
-    int op2 = eval_expr (node->op2, env);
+    ring_t *op1 = eval_expr (node->op1, env);
+    ring_t *op2 = eval_expr (node->op2, env);
     switch (node->type) {
         case ADD:
-            return op1 + op2;
+            return ring_int (eval_ring (op1) + eval_ring (op2));
         case SUB:
-            return op1 - op2;
+            return ring_int (eval_ring (op1) - eval_ring (op2));
         case MUL:
-            return op1 * op2;
+            return ring_int (eval_ring (op1) * eval_ring (op2));
         case DIV:
-            return op1 / op2;
+            return ring_int (eval_ring (op1) / eval_ring (op2));
     }
 }
 
-int
+ring_t*
 eval_expr (node_expr_t *exp, env_t *env) {
+    ring_t *prim;
     switch (exp->type) {
         case RING:
-            return eval_primitive (exp->body.literal); 
+            return exp->body.literal; 
         case ARITH:
             return eval_arith (exp->body.arith_val, env);
         case ID:
-            return eval_primitive (env_lookup (exp->body.id->name, env));
+            prim = env_lookup (exp->body.id->name, env);
+            if (prim == NULL) {
+                sprintf (ERROR, (char *) "var '%s' not assigned",
+                         exp->body.id->name);
+                error ();
+                exit (1);
+            }
+            return prim;
     }
 }
 
@@ -45,11 +54,10 @@ eval_statements (node_statement_t *node, env_t *env) {
                 eval_expr (node->expr, env);
                 break;
             case PRINT:
-                fprintf(RING_OUT, "%d\n", eval_expr (node->expr, env));
+                rprintf(eval_expr (node->expr, env));
                 break;
             case ASSGN:
-                env_add_binding (node->id->name,
-                    ring_int (eval_expr (node->expr, env)), env);
+                env_add_binding (node->id->name, eval_expr (node->expr, env), env);
                 break;
         }
     }
