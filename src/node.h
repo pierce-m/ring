@@ -1,8 +1,5 @@
-#include "environment.h"
 #include <stdio.h>
-
-/* File descriptor for program output */
-FILE *RING_OUT;
+#include "environment.h"
 
 /*******************************************
  * PROGRAM START
