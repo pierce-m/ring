@@ -1,5 +1,5 @@
 #include <string.h>
-#include "node.h"
+#include "runtime.h"
 
 /* Interpretive mode */
 int in;
@@ -18,4 +18,3 @@ void run_interpretive ();
 /* Depending on if we're in the REPL, executes a statement or adds
  * in to the AST */ 
 void execute_or_append (node_statement_t *s);
-
