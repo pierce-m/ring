@@ -68,9 +68,9 @@ main (int argc, char **argv) {
                && ((fin = fopen (argv[2], "r")) != NULL)) {
         interpret_file (fin);
         run_interpretive ();
-    } else if (argc == 4 && !strcmp (argv[2], (char *) "-i")
+    } else if (argc == 4
                && ((fin = fopen (argv[1], "r")) != NULL)
-               && !strcmp (argv[3], (char *) "-o")
+               && !strcmp (argv[2], (char *) "-o")
                && ((fout = fopen (argv[3], "w")) != NULL)) {
         RING_OUT = fout;
         interpret_file (fin);
