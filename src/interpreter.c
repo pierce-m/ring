@@ -29,9 +29,11 @@ int
 eval_expr (node_expr_t *exp, env_t *env) {
     switch (exp->type) {
         case RING:
-           return eval_primitive (exp->body.literal); 
+            return eval_primitive (exp->body.literal); 
         case ARITH:
-           return eval_arith (exp->body.arith_val, env);
+            return eval_arith (exp->body.arith_val, env);
+        case ID:
+            return eval_primitive (env_lookup (exp->body.id->name, env));
     }
 }
 
@@ -40,9 +42,15 @@ eval_statements (node_statement_t *node, env_t *env) {
     for (; node != NULL; node = node->next) {
         switch (node->type) {
             case EXPR:
-                eval_expr (node->block.expr, env);
+                eval_expr (node->expr, env);
+                break;
             case PRINT:
-                fprintf(RING_OUT, "%d\n", eval_expr (node->block.expr, env));
+                fprintf(RING_OUT, "%d\n", eval_expr (node->expr, env));
+                break;
+            case ASSGN:
+                env_add_binding (node->id->name,
+                    ring_int (eval_expr (node->expr, env)), env);
+                break;
         }
     }
 }
@@ -50,4 +58,5 @@ eval_statements (node_statement_t *node, env_t *env) {
 void
 interpret () {
     eval_statements (program_start->st_list, program_start->env);
+    program_start->st_list = NULL;
 }
