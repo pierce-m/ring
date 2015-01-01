@@ -1,18 +1,18 @@
-#include <stdio.h>
 #include "interpreter.h"
+#include <stdio.h>
 
-int eval_expr (node_expr_t *exp) {
-    switch (exp->type) {
+int
+eval_primitive (ring_t *literal) {
+    switch (literal->type) {
         case INT:
-           return exp->body.val; 
-        case ARITH:
-           return eval_arith (exp->body.arith_val);
+            return literal->value.int_val;
     }
 }
 
-int eval_arith (node_arith_t *node) {
-    int op1 = eval_expr (node->op1);
-    int op2 = eval_expr (node->op2);
+int
+eval_arith (node_arith_t *node, env_t* env) {
+    int op1 = eval_expr (node->op1, env);
+    int op2 = eval_expr (node->op2, env);
     switch (node->type) {
         case ADD:
             return op1 + op2;
@@ -25,15 +25,26 @@ int eval_arith (node_arith_t *node) {
     }
 }
 
-int eval_statement (node_statement_t *node) {
-    switch (node->type) {
-        case EXPR:
-            return eval_expr (node->block.expr);
+int
+eval_expr (node_expr_t *exp, env_t *env) {
+    switch (exp->type) {
+        case RING:
+           return eval_primitive (exp->body.literal); 
+        case ARITH:
+           return eval_arith (exp->body.arith_val, env);
     }
 }
 
+void
+eval_statement (node_statement_t *node, env_t *env) {
+    switch (node->type) {
+        case EXPR:
+            eval_expr (node->block.expr, env);
+        case PRINT:
+            fprintf(RING_OUT, "%d\n", eval_expr (node->block.expr, env));
+    }
+}
 
-int interpret () {
-    int ret = eval_statement (program_start->st_list);
-    return ret;
+void
+interpret () {
 }
