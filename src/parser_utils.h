@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include <string.h>
 #include "node.h"
 
@@ -7,7 +6,7 @@ int in;
 
 extern FILE *yyin;
 
-/* Creates a copy of a lexeme. */
+/* Returns a copy of a lexeme. */
 char *copy_lexeme (char *lexeme);
 
 /* Interprets the file pointed to by f */

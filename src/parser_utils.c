@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include "parser_utils.h"
 
 char*

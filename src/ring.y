@@ -1,8 +1,5 @@
 %{
-#include <stdio.h>
-#include <string.h>
-#include <assert.h>
-#include "src/node.h"
+#include "src/parser_utils.h"
 
 void execute_or_append (node_statement_t *s);
 %}
@@ -55,42 +52,10 @@ T  :  T_Int    { $$ = ring_int ($1); }
 
 %%
 
-/* interpretive mode */
-int in = 1;
-
-extern FILE *yyin;
-
-void
-execute_or_append (node_statement_t *s) {
-    add_statement (s);
-    if (in) {
-        interpret ();
-        printf ("%s ", (char *) "ring>");
-    }
-}
-
-void
-interpret_file (FILE *f) {
-    in = 0;
-    yyin = f;
-    yyparse ();
-    interpret ();
-}
-
-void
-run_interpretive () {
-    int res = 1;
-    in = 1;
-    yyin = stdin;
-    printf ("%s ", (char *) "ring>");
-    while (res) { res = yyparse (); }
-}
-
 int
 main (int argc, char **argv) {
     RING_OUT = stdout;
 
-    int i, res;
     FILE *fin, *fout;
     initialize_AST ();
 
@@ -112,4 +77,3 @@ main (int argc, char **argv) {
 
     return 0;
 }
-
