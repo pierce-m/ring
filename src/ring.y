@@ -3,20 +3,26 @@
 #include <string.h>
 #include <assert.h>
 #include "src/node.h"
+
+void execute_or_append (node_statement_t *s);
 %}
 
-%token <val>T_Int
-
-%type<state>P
-%type<node_statement>S
+%type <state>P
+%type <node_statement>S
 %type <node_expr>E
+%type <id> ID
 %type <rt>T
+
+%token <val>T_Int
+%token <name>T_Id
 
 %left '-' '+'
 %left '*' '/'
 
 %union {
     int val;
+    char *name;
+    struct node_id *id;
     struct ring_t *rt;
     struct node_expr_t *node_expr;
     struct node_statement_t *node_statement;
@@ -24,45 +30,86 @@
 
 %%
 
-P  : P S       { add_statement ($2); }
-   | S         { add_statement ($1); }
+P  : P S       { execute_or_append ($2); }
+   | S         { execute_or_append ($1); }
    ;
 
-S  : 'print' E '\n' { $$ = node_statement_from_print ($2); }
-   | E '\n'         { $$ = node_statement_from_expr ($1);  }
+S  : 'print' E '\n' { $$ = node_statement_print ($2);     }
+   | ID '=' E '\n'  { $$ = node_statement_assgn ($1, $3); }
+   | E '\n'         { $$ = node_statement_expr ($1);      }
    ;
    
-
 E  :  E '+' E  { $$ = node_expr_from_arith (make_node_arith (ADD, $1, $3)); }
    |  E '-' E  { $$ = node_expr_from_arith (make_node_arith (SUB, $1, $3)); }
    |  E '*' E  { $$ = node_expr_from_arith (make_node_arith (MUL, $1, $3)); }
    |  E '/' E  { $$ = node_expr_from_arith (make_node_arith (DIV, $1, $3)); }
    |  T        { $$ = node_expr_from_ring ($1); }
+   |  ID       { $$ = node_expr_from_id ($1); }
    ; 
+
+ID :  T_Id     { $$ = node_id_init ($1); }
+   ;
 
 T  :  T_Int    { $$ = ring_int ($1); }
    ;
 
 %%
 
+/* interpretive mode */
+int in = 1;
+
+extern FILE *yyin;
+
+void
+execute_or_append (node_statement_t *s) {
+    add_statement (s);
+    if (in) {
+        interpret ();
+        printf ("%s ", (char *) "ring>");
+    }
+}
+
+void
+interpret_file (FILE *f) {
+    in = 0;
+    yyin = f;
+    yyparse ();
+    interpret ();
+}
+
+void
+run_interpretive () {
+    int res = 1;
+    in = 1;
+    yyin = stdin;
+    printf ("%s ", (char *) "ring>");
+    while (res) { res = yyparse (); }
+}
+
 int
 main (int argc, char **argv) {
-    assert (argc > 1);
     RING_OUT = stdout;
 
-    int i;
-    for (i = 1; i < argc; ++i) {
-        if (!strcmp (argv[i], (char *) "-o")) {
-            RING_OUT = fopen (argv[i + 1], "w");
-            break;
-        } else {
-            extern FILE *yyin;
-            yyin = fopen (argv[i], "r");
-        }
+    int i, res;
+    FILE *fin, *fout;
+    initialize_AST ();
+
+    if (argc == 1) {
+        run_interpretive ();
+    } else if (argc == 2 && ((fin = fopen (argv[1], "r")) != NULL)) {
+        interpret_file (fin);
+    } else if (argc == 3 && !strcmp (argv[1], (char *) "-i")
+               && ((fin = fopen (argv[2], "r")) != NULL)) {
+        interpret_file (fin);
+        run_interpretive ();
+    } else if (argc == 4 && !strcmp (argv[2], (char *) "-i")
+               && ((fin = fopen (argv[1], "r")) != NULL)
+               && !strcmp (argv[3], (char *) "-o")
+               && ((fout = fopen (argv[3], "w")) != NULL)) {
+        RING_OUT = fout;
+        interpret_file (fin);
     }
 
-    initialize_AST ();
-    int res = yyparse ();
-    interpret ();
-    return res;
+    return 0;
 }
+
