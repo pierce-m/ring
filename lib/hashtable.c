@@ -59,11 +59,8 @@ hash_chain_end (hash_pair *hp) {
 }
 
 hash_pair*
-hash_pair_get (char *str, hashtable *h) {
-    hash_pair *hp = h->buckets[hash ((unsigned char *) str) % h->size];
-    if (hp == NULL)
-        return NULL;
-    for (; hp->next != NULL; hp = hp->next)
+hash_pair_get (char *str, hash_pair *hp) {
+    for (; hp != NULL; hp = hp->next)
         if (!strcmp(hp->key, str))
             return hp;
     return NULL;
@@ -71,8 +68,12 @@ hash_pair_get (char *str, hashtable *h) {
 
 void
 hash_insert (char *str, void *value, hashtable *h) {
+    unsigned long bucket  = hash ((unsigned char *) str) % h->size;
     hash_pair *existing_val;
-    if ((existing_val = hash_pair_get (str, h)) != NULL) {
+
+    if (h->buckets[bucket] == NULL) {
+        h->buckets[bucket] = hash_pair_init (str, value);
+    } else if ((existing_val = hash_pair_get (str, h->buckets[bucket])) != NULL) {
         existing_val->val = value;
     } else {
         hash_chain_end (h->buckets[hash ((unsigned char*) str) % h->size])->next =
@@ -82,6 +83,7 @@ hash_insert (char *str, void *value, hashtable *h) {
 
 void*
 hash_get (char *str, hashtable *h) {
-    hash_pair *hp = hash_pair_get (str, h);
-    return hp == NULL ? hp : hp->val;
+    hash_pair *hp =
+        hash_pair_get (str, h->buckets[hash ((unsigned char*) str) % h->size]);
+    return hp == NULL ? NULL : hp->val;
 }
