@@ -50,7 +50,7 @@ node_arith_t *make_node_arith (arith_type, struct node_expr_t *op1, struct node_
  *******************************************/
 
 /* Basic expression types */
-typedef enum expr_type { RING, ARITH } expr_type;
+typedef enum expr_type { RING, ARITH, ID } expr_type;
 
 /* An expression AST node. Has a type and a body. The body can be an arithmetic
  * expression (for now) or an integer. Note that integer literals do not have
@@ -61,6 +61,7 @@ typedef struct node_expr_t {
     union {
         ring_t *literal;
         node_arith_t *arith_val;
+        struct node_id *id;
     } body;
 } node_expr_t;
 
@@ -70,29 +71,45 @@ node_expr_t *node_expr_from_ring (ring_t *r);
 /* Constructs expressions with arithmetic nodes */
 node_expr_t *node_expr_from_arith (node_arith_t *node);
 
+/* Constructor for expressions from id type */
+node_expr_t *node_expr_from_id (struct node_id *id);
+
 /*******************************************
  * STATEMENT NODES
  *******************************************/
 
 /* Basic statement types. Currently the only statement type is and expression. */
-typedef enum statement_type { EXPR, PRINT } statement_type;
+typedef enum statement_type { EXPR, PRINT, ASSGN } statement_type;
 
-/* A statement AST node. Has a type, a body, and a pointer to the next statement
- * in the current lexical scope. Statements are seperated in the source by
- * newlines. */
+/* A statement AST node. This will eventually have a lot of unused fields due
+ * to the nature of statements (ie if, assignment, print, etc) requiring lots
+ * of different fields */
 typedef struct node_statement_t {
     statement_type type;
-    union {
-        node_expr_t *expr;
-    } block;
+    struct node_id *id;
+    node_expr_t *expr;
     struct node_statement_t *next;
 } node_statement_t;
 
 /* Constructor for statements from lines containing only expressions */
-node_statement_t *node_statement_from_expr (node_expr_t *expr);
+node_statement_t *node_statement_expr (node_expr_t *expr);
 
 /* Constructor for print statements, which print expression values. */
-node_statement_t *node_statement_from_print (node_expr_t *expr);
+node_statement_t *node_statement_print (node_expr_t *expr);
+
+/* Constructor for assignment statements */
+node_statement_t *node_statement_assgn (struct node_id *name, node_expr_t *expr);
+
+/*******************************************
+ * ID NODES
+ *******************************************/
+
+/* Pretty simple, its a variable and it has a name. */
+typedef struct node_id {
+    char *name;
+} node_id;
+
+node_id *node_id_init (char *name);
 
 /*******************************************
  * API / HELPER FUNS

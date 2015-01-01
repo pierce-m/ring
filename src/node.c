@@ -46,21 +46,46 @@ node_expr_from_arith (node_arith_t *node) {
     return e;
 }
 
+node_expr_t*
+node_expr_from_id (node_id *id) {
+    node_expr_t *e = malloc (sizeof (node_expr_t));
+    e->type = ID;
+    e->body.id = id;
+    return e;
+}
+
+
 node_statement_t*
-node_statement_from_expr (node_expr_t *expr) {
+node_statement_expr (node_expr_t *expr) {
     node_statement_t *s = malloc (sizeof (node_statement_t));
     s->type = EXPR;
-    s->block.expr = expr;
+    s->expr = expr;
     s->next = NULL;
     return s;
 }
 
 node_statement_t*
-node_statement_from_print (node_expr_t *expr) {
+node_statement_print (node_expr_t *expr) {
     node_statement_t *s = malloc (sizeof (node_statement_t));
     s->type = PRINT;
-    s->block.expr = expr;
+    s->expr = expr;
     s->next = NULL;
     return s;
 }
 
+node_statement_t*
+node_statement_assgn (node_id *name, node_expr_t *expr) {
+    node_statement_t *s = malloc (sizeof (node_statement_t));
+    s->type = ASSGN;
+    s->id = name;
+    s->expr = expr;
+    s->next = NULL;
+    return s;
+}
+
+node_id*
+node_id_init (char *name) {
+    node_id *n = malloc (sizeof (node_id));
+    n->name = name;
+    return n;
+}
