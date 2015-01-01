@@ -1,6 +1,6 @@
 %{
 #include <stdio.h>
-#include "node.h"
+#include "src/node.h"
 %}
 
 %token <val>T_Int
@@ -21,11 +21,10 @@
 %%
 
 P  : P S       { add_statement ($2); }
-   |
+   | S         { add_statement ($1); }
    ;
 
 S  : E '\n'    { $$ = node_statement_from_expr ($1); }
-   |
    ;
    
 
