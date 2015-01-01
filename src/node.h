@@ -98,9 +98,8 @@ node_statement_t *node_statement_from_print (node_expr_t *expr);
  * API / HELPER FUNS
  *******************************************/
 
-/* The main interpreter function, belongs to interpreter.c 
- * This function is called to interpret the AST after it has been built. */
+/* Entry point to program interpreter. */
 void interpret ();
 
 /* Initializes the first program root. Called before parsing. */
-void initialize_program ();
+void initialize_AST ();

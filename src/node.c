@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include "node.h"
 
-void initialize_program () {
+void initialize_AST () {
     program_start = malloc (sizeof (program_state_t));
     program_start->st_list = NULL;
     env_t *e = malloc (sizeof (env_t));
