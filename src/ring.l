@@ -6,7 +6,7 @@
 %%
 
 print     { return *yytext; }
-[a-zA-Z]  { yylval.name = copy_lexeme (yytext); return T_Id; }
+[a-zA-Z]+ { yylval.name = copy_lexeme (yytext); return T_Id; }
 [0-9]+    { yylval.val = atoi(yytext); return T_Int; }
 [-+*/\n=] { return *yytext;                          }
 .         {       /* ignore all other chars */       }
