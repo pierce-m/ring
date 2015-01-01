@@ -1,16 +1,23 @@
+#include "environment.h"
+#include <stdio.h>
+
+/* File descriptor for program output */
+FILE *RING_OUT;
+
 /*******************************************
  * PROGRAM START
  *******************************************/
 
-/* The root AST node, indicating the start of the program. */
-typedef struct root_t {
+/* Program state, has a list of statements and an environment */
+typedef struct program_state_t {
     struct node_statement_t *st_list;
-} root_t;
+    env_t *env;
+} program_state_t;
 
 /* Inital program root, initialized before parsing begins. At each newline in the
  * .ring file, program_start->st_list is updated with a new statement. At the end
  * of parsing, the statements in this list are executed by the interpreter. */
-root_t *program_start;
+program_state_t *program_start;
 
 /* The most recent statement added to the statement list. This variable
  * elimintates the need to iterate to the end of the statement list each time
@@ -43,7 +50,7 @@ node_arith_t *make_node_arith (arith_type, struct node_expr_t *op1, struct node_
  *******************************************/
 
 /* Basic expression types */
-typedef enum expr_type { INT, ARITH } expr_type;
+typedef enum expr_type { RING, ARITH } expr_type;
 
 /* An expression AST node. Has a type and a body. The body can be an arithmetic
  * expression (for now) or an integer. Note that integer literals do not have
@@ -51,14 +58,14 @@ typedef enum expr_type { INT, ARITH } expr_type;
  * expressions by the parser. Will this change? Maybe. */
 typedef struct node_expr_t {
     expr_type type;
-    union body {
-        int val;
+    union {
+        ring_t *literal;
         node_arith_t *arith_val;
     } body;
 } node_expr_t;
 
-/* Constructor for expression from int literal */
-node_expr_t *node_expr_from_int (int val);
+/* Constructor for expression from ring type */
+node_expr_t *node_expr_from_ring (ring_t *r);
 
 /* Constructs expressions with arithmetic nodes */
 node_expr_t *node_expr_from_arith (node_arith_t *node);
@@ -68,14 +75,14 @@ node_expr_t *node_expr_from_arith (node_arith_t *node);
  *******************************************/
 
 /* Basic statement types. Currently the only statement type is and expression. */
-typedef enum statement_type { EXPR } statement_type;
+typedef enum statement_type { EXPR, PRINT } statement_type;
 
 /* A statement AST node. Has a type, a body, and a pointer to the next statement
  * in the current lexical scope. Statements are seperated in the source by
  * newlines. */
 typedef struct node_statement_t {
     statement_type type;
-    union block {
+    union {
         node_expr_t *expr;
     } block;
     struct node_statement_t *next;
@@ -84,13 +91,16 @@ typedef struct node_statement_t {
 /* Constructor for statements from lines containing only expressions */
 node_statement_t *node_statement_from_expr (node_expr_t *expr);
 
+/* Constructor for print statements, which print expression values. */
+node_statement_t *node_statement_from_print (node_expr_t *expr);
+
 /*******************************************
  * API / HELPER FUNS
  *******************************************/
 
 /* The main interpreter function, belongs to interpreter.c 
  * This function is called to interpret the AST after it has been built. */
-int interpret ();
+void interpret ();
 
 /* Initializes the first program root. Called before parsing. */
 void initialize_program ();

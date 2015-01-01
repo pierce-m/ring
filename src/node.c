@@ -2,8 +2,12 @@
 #include "node.h"
 
 void initialize_program () {
-    program_start = malloc (sizeof (root_t));
+    program_start = malloc (sizeof (program_state_t));
     program_start->st_list = NULL;
+    env_t *e = malloc (sizeof (env_t));
+    e->parent = NULL;
+    e->bindings = hashtable_init (10);
+    program_start->env = e;
 }
 
 void
@@ -27,10 +31,10 @@ make_node_arith (arith_type type, node_expr_t *op1, node_expr_t *op2) {
 }
 
 node_expr_t*
-node_expr_from_int (int val) {
+node_expr_from_ring (ring_t *r) {
     node_expr_t *e = malloc (sizeof (node_expr_t));
-    e->body.val = val;
-    e->type = INT;
+    e->body.literal= r;
+    e->type = RING;
     return e;
 }
 
@@ -46,6 +50,15 @@ node_statement_t*
 node_statement_from_expr (node_expr_t *expr) {
     node_statement_t *s = malloc (sizeof (node_statement_t));
     s->type = EXPR;
+    s->block.expr = expr;
+    s->next = NULL;
+    return s;
+}
+
+node_statement_t*
+node_statement_from_print (node_expr_t *expr) {
+    node_statement_t *s = malloc (sizeof (node_statement_t));
+    s->type = PRINT;
     s->block.expr = expr;
     s->next = NULL;
     return s;
