@@ -1,5 +1,6 @@
 %{
 #include "src/parser_utils.h"
+#include <assert.h>
 %}
 
 %type <state>P
@@ -62,16 +63,15 @@ main (int argc, char **argv) {
         run_interpretive ();
     } else if (argc == 2 && ((fin = fopen (argv[1], "r")) != NULL)) {
         interpret_file (fin);
-    } else if (argc == 3 && !strcmp (argv[1], (char *) "-i")
-               && ((fin = fopen (argv[2], "r")) != NULL)) {
-        interpret_file (fin);
-        run_interpretive ();
     } else if (argc == 4
                && ((fin = fopen (argv[1], "r")) != NULL)
                && !strcmp (argv[2], (char *) "-o")
                && ((fout = fopen (argv[3], "w")) != NULL)) {
         RING_OUT = fout;
         interpret_file (fin);
+    } else {
+        printf ("%s\n", (char *) "Usage: [-i infile -o outfile]");
+        exit(1);
     }
 
     return 0;
