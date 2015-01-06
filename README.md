@@ -1,7 +1,8 @@
 ring
 ====
-First run ```make```.
-Usage: for repl type ```./ring```. Otherwise the structure goes like this: 
+First run ```make``` to build the executable.
 
-```./ring [-i infile -o outfile]```
+Usage: for REPL type ```./ring```. Otherwise the structure goes like this: 
+
+```./ring [infile [-o outfile]]```
 
