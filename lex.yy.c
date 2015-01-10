@@ -330,6 +330,9 @@ void yyfree (void *  );
 
 #define YY_AT_BOL() (YY_CURRENT_BUFFER_LVALUE->yy_at_bol)
 
+#define yywrap(n) 1
+#define YY_SKIP_YYWRAP
+
 typedef unsigned char YY_CHAR;
 
 FILE *yyin = (FILE *) 0, *yyout = (FILE *) 0;
@@ -457,7 +460,7 @@ char *yytext;
 #line 2 "src/ring.l"
 #include "y.tab.h"
 #include "src/parser_utils.h"
-#line 461 "lex.yy.c"
+#line 464 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -639,10 +642,10 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
     
-#line 6 "src/ring.l"
+#line 7 "src/ring.l"
 
 
-#line 646 "lex.yy.c"
+#line 649 "lex.yy.c"
 
 	if ( !(yy_init) )
 		{
@@ -727,41 +730,41 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 8 "src/ring.l"
+#line 9 "src/ring.l"
 { return *yytext; }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 9 "src/ring.l"
+#line 10 "src/ring.l"
 { return *yytext; }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 10 "src/ring.l"
+#line 11 "src/ring.l"
 { yylval.name = copy_lexeme (yytext); return T_Id; }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 11 "src/ring.l"
+#line 12 "src/ring.l"
 { yylval.val = atoi(yytext); return T_Int; }
 	YY_BREAK
 case 5:
 /* rule 5 can match eol */
 YY_RULE_SETUP
-#line 12 "src/ring.l"
+#line 13 "src/ring.l"
 { return *yytext;                          }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 13 "src/ring.l"
+#line 14 "src/ring.l"
 {       /* ignore all other chars */       }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 15 "src/ring.l"
+#line 16 "src/ring.l"
 ECHO;
 	YY_BREAK
-#line 765 "lex.yy.c"
+#line 768 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1758,4 +1761,4 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 15 "src/ring.l"
+#line 16 "src/ring.l"

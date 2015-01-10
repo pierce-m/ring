@@ -52,7 +52,7 @@
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 18 "src/ring.y"
+#line 19 "src/ring.y"
 {
     int val;
     char *name;

@@ -82,6 +82,7 @@
 
 #include "src/parser_utils.h"
 #include <assert.h>
+void yyerror (char const *s);
 
 
 /* Enabling traces.  */
@@ -104,7 +105,7 @@
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 18 "src/ring.y"
+#line 19 "src/ring.y"
 {
     int val;
     char *name;
@@ -114,7 +115,7 @@ typedef union YYSTYPE
     struct node_statement_t *node_statement;
 }
 /* Line 193 of yacc.c.  */
-#line 118 "y.tab.c"
+#line 119 "y.tab.c"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
@@ -127,7 +128,7 @@ typedef union YYSTYPE
 
 
 /* Line 216 of yacc.c.  */
-#line 131 "y.tab.c"
+#line 132 "y.tab.c"
 
 #ifdef short
 # undef short
@@ -413,8 +414,8 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    29,    29,    30,    33,    34,    35,    38,    39,    40,
-      41,    42,    43,    44,    47,    50
+       0,    30,    30,    31,    34,    35,    36,    39,    40,    41,
+      42,    43,    44,    45,    48,    51
 };
 #endif
 
@@ -1329,78 +1330,78 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 29 "src/ring.y"
+#line 30 "src/ring.y"
     { execute_or_append ((yyvsp[(2) - (2)].node_statement)); }
     break;
 
   case 3:
-#line 30 "src/ring.y"
+#line 31 "src/ring.y"
     { execute_or_append ((yyvsp[(1) - (1)].node_statement)); }
     break;
 
   case 4:
-#line 33 "src/ring.y"
+#line 34 "src/ring.y"
     { (yyval.node_statement) = node_statement_print ((yyvsp[(2) - (3)].node_expr));     }
     break;
 
   case 5:
-#line 34 "src/ring.y"
+#line 35 "src/ring.y"
     { (yyval.node_statement) = node_statement_assgn ((yyvsp[(1) - (4)].id), (yyvsp[(3) - (4)].node_expr)); }
     break;
 
   case 6:
-#line 35 "src/ring.y"
+#line 36 "src/ring.y"
     { (yyval.node_statement) = node_statement_expr ((yyvsp[(1) - (2)].node_expr));      }
     break;
 
   case 7:
-#line 38 "src/ring.y"
+#line 39 "src/ring.y"
     { (yyval.node_expr) = (yyvsp[(2) - (3)].node_expr); }
     break;
 
   case 8:
-#line 39 "src/ring.y"
+#line 40 "src/ring.y"
     { (yyval.node_expr) = node_expr_from_arith (make_node_arith (ADD, (yyvsp[(1) - (3)].node_expr), (yyvsp[(3) - (3)].node_expr))); }
     break;
 
   case 9:
-#line 40 "src/ring.y"
+#line 41 "src/ring.y"
     { (yyval.node_expr) = node_expr_from_arith (make_node_arith (SUB, (yyvsp[(1) - (3)].node_expr), (yyvsp[(3) - (3)].node_expr))); }
     break;
 
   case 10:
-#line 41 "src/ring.y"
+#line 42 "src/ring.y"
     { (yyval.node_expr) = node_expr_from_arith (make_node_arith (MUL, (yyvsp[(1) - (3)].node_expr), (yyvsp[(3) - (3)].node_expr))); }
     break;
 
   case 11:
-#line 42 "src/ring.y"
+#line 43 "src/ring.y"
     { (yyval.node_expr) = node_expr_from_arith (make_node_arith (DIV, (yyvsp[(1) - (3)].node_expr), (yyvsp[(3) - (3)].node_expr))); }
     break;
 
   case 12:
-#line 43 "src/ring.y"
+#line 44 "src/ring.y"
     { (yyval.node_expr) = node_expr_from_ring ((yyvsp[(1) - (1)].rt)); }
     break;
 
   case 13:
-#line 44 "src/ring.y"
+#line 45 "src/ring.y"
     { (yyval.node_expr) = node_expr_from_id ((yyvsp[(1) - (1)].id)); }
     break;
 
   case 14:
-#line 47 "src/ring.y"
+#line 48 "src/ring.y"
     { (yyval.id) = node_id_init ((yyvsp[(1) - (1)].name)); }
     break;
 
   case 15:
-#line 50 "src/ring.y"
+#line 51 "src/ring.y"
     { (yyval.rt) = ring_int ((yyvsp[(1) - (1)].val)); }
     break;
 
 
 /* Line 1267 of yacc.c.  */
-#line 1404 "y.tab.c"
+#line 1405 "y.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -1614,8 +1615,12 @@ yyreturn:
 }
 
 
-#line 53 "src/ring.y"
+#line 54 "src/ring.y"
 
+
+void yyerror (char const *s) {
+    fprintf (stderr, "%s\n", s);
+}
 
 int
 main (int argc, char **argv) {
