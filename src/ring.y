@@ -33,7 +33,7 @@ P  : P S       { execute_or_append ($2); }
 
 S  : 'print' E NL   { $$ = node_statement_print ($2);     }
    | ID '=' E NL    { $$ = node_statement_assgn ($1, $3); }
-   | E '\n'         { $$ = node_statement_expr ($1);      }
+   | E NL           { $$ = node_statement_expr ($1);      }
    ;
    
 E  :  '(' E ')'  { $$ = $2; }
@@ -68,9 +68,7 @@ main (int argc, char **argv) {
     FILE *fin, *fout;
     initialize_AST ();
 
-    if (argc == 1) {
-        run_interpretive ();
-    } else if (argc == 2 && ((fin = fopen (argv[1], "r")) != NULL)) {
+    if (argc == 2 && ((fin = fopen (argv[1], "r")) != NULL)) {
         interpret_file (fin);
     } else if (argc == 4
                && ((fin = fopen (argv[1], "r")) != NULL)
@@ -79,7 +77,7 @@ main (int argc, char **argv) {
         RING_OUT = fout;
         interpret_file (fin);
     } else {
-        printf ("%s\n", (char *) "Usage: [-i infile -o outfile]");
+        printf ("%s\n", (char *) "Usage: -i infile [-o outfile]");
         exit(1);
     }
 

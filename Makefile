@@ -6,7 +6,7 @@ OTHERS=y.output out.ring ring.dSYM *.o
 EXECUTABLE=ring
 
 $(EXECUTABLE): $(PARSERFILES) 
-	$(CC) -g -o $(EXECUTABLE) $(SOURCES) $(PARSERFILES) -ll -ly 
+	$(CC) -g -o $(EXECUTABLE) $(SOURCES) $(PARSERFILES)
 
 $(PARSERFILES):
 	bison -vdty src/ring.y
