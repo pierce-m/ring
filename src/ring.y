@@ -1,6 +1,7 @@
 %{
 #include "src/parser_utils.h"
 #include <assert.h>
+void yyerror (char const *s);
 %}
 
 %type <state>P
@@ -51,6 +52,10 @@ T  :  T_Int    { $$ = ring_int ($1); }
    ;
 
 %%
+
+void yyerror (char const *s) {
+    fprintf (stderr, "%s\n", s);
+}
 
 int
 main (int argc, char **argv) {

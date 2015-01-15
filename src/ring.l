@@ -3,6 +3,7 @@
 #include "src/parser_utils.h"
 %}
 
+%option noyywrap
 %%
 
 print     { return *yytext; }
