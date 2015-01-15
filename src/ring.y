@@ -31,8 +31,8 @@ P  : P S       { execute_or_append ($2); }
    | S         { execute_or_append ($1); }
    ;
 
-S  : 'print' E '\n' { $$ = node_statement_print ($2);     }
-   | ID '=' E '\n'  { $$ = node_statement_assgn ($1, $3); }
+S  : 'print' E NL   { $$ = node_statement_print ($2);     }
+   | ID '=' E NL    { $$ = node_statement_assgn ($1, $3); }
    | E '\n'         { $$ = node_statement_expr ($1);      }
    ;
    
@@ -49,6 +49,10 @@ ID :  T_Id     { $$ = node_id_init ($1); }
    ;
 
 T  :  T_Int    { $$ = ring_int ($1); }
+   ;
+
+NL :  NL '\n'
+   |  '\n'
    ;
 
 %%

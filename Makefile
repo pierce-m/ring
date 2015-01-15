@@ -2,7 +2,7 @@ CC=gcc
 CFLAGS=-Wall -c
 SOURCES=src/*.c lib/*.c
 PARSERFILES=y.tab.c lex.yy.c
-OTHERS=y.output out.ring ring.dSYM y.tab.h *.o
+OTHERS=y.output out.ring ring.dSYM *.o
 EXECUTABLE=ring
 
 $(EXECUTABLE): $(PARSERFILES) 
@@ -13,4 +13,7 @@ $(PARSERFILES):
 	flex src/ring.l
 
 clean:
-	rm -rf $(OTHERS) $(EXECUTABLE) $(PARSERFILES) 
+	rm -rf $(OTHERS) $(EXECUTABLE) 
+
+clean-all: clean
+	rm -rf $(PARSERFILES) y.tab.h
