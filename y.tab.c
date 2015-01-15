@@ -343,7 +343,7 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  13
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   42
+#define YYLAST   43
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  14
@@ -365,10 +365,10 @@ union yyalloc
 static const yytype_uint8 yytranslate[] =
 {
        0,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-      11,     2,     2,     2,     2,     2,     2,     2,     2,     2,
+      13,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-      12,    13,     7,     6,     2,     5,     2,     8,     2,     2,
+      11,    12,     7,     6,     2,     5,     2,     8,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,    10,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
@@ -405,11 +405,11 @@ static const yytype_uint8 yyprhs[] =
 static const yytype_int8 yyrhs[] =
 {
       15,     0,    -1,    15,    16,    -1,    16,    -1,     9,    17,
-      20,    -1,    18,    10,    17,    20,    -1,    17,    11,    -1,
-      12,    17,    13,    -1,    17,     6,    17,    -1,    17,     5,
+      20,    -1,    18,    10,    17,    20,    -1,    17,    20,    -1,
+      11,    17,    12,    -1,    17,     6,    17,    -1,    17,     5,
       17,    -1,    17,     7,    17,    -1,    17,     8,    17,    -1,
-      19,    -1,    18,    -1,     4,    -1,     3,    -1,    20,    11,
-      -1,    11,    -1
+      19,    -1,    18,    -1,     4,    -1,     3,    -1,    20,    13,
+      -1,    13,    -1
 };
 
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
@@ -426,7 +426,7 @@ static const yytype_uint8 yyrline[] =
 static const char *const yytname[] =
 {
   "$end", "error", "$undefined", "T_Int", "T_Id", "'-'", "'+'", "'*'",
-  "'/'", "'print'", "'='", "'\\n'", "'('", "')'", "$accept", "P", "S", "E",
+  "'/'", "'print'", "'='", "'('", "')'", "'\\n'", "$accept", "P", "S", "E",
   "ID", "T", "NL", 0
 };
 #endif
@@ -437,7 +437,7 @@ static const char *const yytname[] =
 static const yytype_uint16 yytoknum[] =
 {
        0,   256,   257,   258,   259,    45,    43,    42,    47,   112,
-      61,    10,    40,    41
+      61,    40,    41,    10
 };
 # endif
 
@@ -461,15 +461,15 @@ static const yytype_uint8 yyr2[] =
 static const yytype_uint8 yydefact[] =
 {
        0,    15,    14,     0,     0,     0,     3,     0,    13,    12,
-       0,    13,     0,     1,     2,     0,     0,     0,     0,     6,
-       0,    17,     4,     7,     9,     8,    10,    11,     0,    16,
+       0,    13,     0,     1,     2,     0,     0,     0,     0,    17,
+       6,     0,     4,     7,     9,     8,    10,    11,    16,     0,
        5
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-      -1,     5,     6,     7,    11,     9,    22
+      -1,     5,     6,     7,    11,     9,    20
 };
 
 /* YYPACT[STATE-NUM] -- Index in YYTABLE of the portion describing
@@ -477,16 +477,16 @@ static const yytype_int8 yydefgoto[] =
 #define YYPACT_NINF -11
 static const yytype_int8 yypact[] =
 {
-      17,   -11,   -11,    19,    19,     7,   -11,    -2,    -8,   -11,
-      31,   -11,    27,   -11,   -11,    19,    19,    19,    19,   -11,
-      19,   -11,    13,   -11,    20,    20,   -11,   -11,    31,   -11,
-      13
+      22,   -11,   -11,    24,    24,     1,   -11,    16,     3,   -11,
+      16,   -11,    31,   -11,   -11,    24,    24,    24,    24,   -11,
+      -4,    24,    -4,   -11,     0,     0,   -11,   -11,   -11,    16,
+      -4
 };
 
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -11,   -11,     3,    -3,    25,   -11,   -10
+     -11,   -11,    13,    -1,     6,   -11,   -10
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]].  What to do in state STATE-NUM.  If
@@ -496,29 +496,29 @@ static const yytype_int8 yypgoto[] =
 #define YYTABLE_NINF -1
 static const yytype_uint8 yytable[] =
 {
-      10,    12,    20,    15,    16,    17,    18,    13,    14,    19,
-       1,     2,    24,    25,    26,    27,     3,    28,    30,     4,
-       1,     2,     1,     2,    29,     8,     3,    17,    18,     4,
-       8,     4,    15,    16,    17,    18,    15,    16,    17,    18,
-      23,     0,    21
+      22,    13,    10,    12,     1,     2,     8,    17,    18,    28,
+       3,     8,     4,    21,    24,    25,    26,    27,    14,    30,
+      29,    15,    16,    17,    18,     1,     2,     1,     2,    19,
+       0,     3,     0,     4,     0,     4,    15,    16,    17,    18,
+       0,     0,     0,    23
 };
 
 static const yytype_int8 yycheck[] =
 {
-       3,     4,    10,     5,     6,     7,     8,     0,     5,    11,
-       3,     4,    15,    16,    17,    18,     9,    20,    28,    12,
-       3,     4,     3,     4,    11,     0,     9,     7,     8,    12,
-       5,    12,     5,     6,     7,     8,     5,     6,     7,     8,
-      13,    -1,    11
+      10,     0,     3,     4,     3,     4,     0,     7,     8,    13,
+       9,     5,    11,    10,    15,    16,    17,    18,     5,    29,
+      21,     5,     6,     7,     8,     3,     4,     3,     4,    13,
+      -1,     9,    -1,    11,    -1,    11,     5,     6,     7,     8,
+      -1,    -1,    -1,    12
 };
 
 /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
    symbol of state STATE-NUM.  */
 static const yytype_uint8 yystos[] =
 {
-       0,     3,     4,     9,    12,    15,    16,    17,    18,    19,
-      17,    18,    17,     0,    16,     5,     6,     7,     8,    11,
-      10,    11,    20,    13,    17,    17,    17,    17,    17,    11,
+       0,     3,     4,     9,    11,    15,    16,    17,    18,    19,
+      17,    18,    17,     0,    16,     5,     6,     7,     8,    13,
+      20,    10,    20,    12,    17,    17,    17,    17,    13,    17,
       20
 };
 
@@ -1633,9 +1633,7 @@ main (int argc, char **argv) {
     FILE *fin, *fout;
     initialize_AST ();
 
-    if (argc == 1) {
-        run_interpretive ();
-    } else if (argc == 2 && ((fin = fopen (argv[1], "r")) != NULL)) {
+    if (argc == 2 && ((fin = fopen (argv[1], "r")) != NULL)) {
         interpret_file (fin);
     } else if (argc == 4
                && ((fin = fopen (argv[1], "r")) != NULL)
@@ -1644,7 +1642,7 @@ main (int argc, char **argv) {
         RING_OUT = fout;
         interpret_file (fin);
     } else {
-        printf ("%s\n", (char *) "Usage: [-i infile -o outfile]");
+        printf ("%s\n", (char *) "Usage: -i infile [-o outfile]");
         exit(1);
     }
 
